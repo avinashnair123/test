@@ -1,5 +1,9 @@
 <?php
-// all actions for register,login and listing is here
+
+/** 
+ *  all actions for register,login and listing is here
+ */
+
 class UserController { 
     function __construct()
     {
@@ -9,8 +13,11 @@ class UserController {
     static $userList = [];
     static $csrftoken = '';
     
-    /* to redirect to view pages
-       view name as parameter */   
+    /**
+     * getview
+     * to redirect to view pages
+     * @param string $view
+     */   
     function getView($view) {
         session_start();
         self::$csrftoken = Session::setCsrfToken();
@@ -22,10 +29,16 @@ class UserController {
         }
     }
 
-    /* save posted data to db
-       params : post data from the register form */
+    /**
+     * postRegister
+     * save posted data to db
+     */
     function postRegister() {
-        $this->checkToken();
+        $tokenMisMatch = $this->checkToken();
+        if($tokenMisMatch) {
+            Session::setErrorMesssage('Token Missmatch');
+    	    $this->getView('register');
+        }
         $validation = $this->validationCheck();
     	if($validation) {
             Session::setErrorMesssage('All fields are required');
@@ -47,9 +60,13 @@ class UserController {
     	
     }
 
-    /* validating the post data
-       return true when a validation error exist */
-    private function validationCheck() {
+    /** 
+     * validationcheck
+     * validating the post data
+     * @return boolean
+     */ 
+    private function validationCheck() : bool 
+    {
         $validationExist = false;
         foreach($_POST as $val) {
             if ($val=='') {
@@ -63,7 +80,10 @@ class UserController {
         } 
     }
 
-    /* redirection to the home page after login/registration */
+    /**
+     * getHome
+     * redirection to the home page after login/registration 
+     */
     function getHome() {
         session_start();
         $isLogged = Session::checkisLogged();
@@ -75,13 +95,19 @@ class UserController {
         
     }
 
-    /* logout function */
+    /**
+     * getLogout
+     *  logout function 
+     */
     function getLogout() {
         Session::clearSessionUser();
         header('Location: users');
     }
     
-    /* redirect to index page */
+    /**
+     * getIndex
+     *  redirect to index page 
+     */
     function getIndex() {
         session_start();
         $isLogged = Session::checkisLogged();
@@ -93,10 +119,16 @@ class UserController {
         }
     }
     
-    /* login  ckeck function
-       params : post data from the login form */
+    /**
+     * postLogin
+     * login  ckeck function
+     */
     function postLogin() {
-        $this->checkToken();
+        $tokenMisMatch = $this->checkToken();
+        if($tokenMisMatch) {
+            Session::setErrorMesssage('Token Missmatch');
+    	    $this->getView('login');
+        }
         $validation = $this->validationCheck();
         if($validation) {
             Session::setErrorMesssage('all fields are required');
@@ -112,13 +144,17 @@ class UserController {
         
     }
 
-    /* check posted csrf token with token in the session
-       exit if mismatch found */
-    private function checkToken() {
+    /**
+     * checkToken
+     * check posted csrf token with token in the session
+     * @return boolean
+     */
+    private function checkToken() : bool 
+    {
         session_start();
         $isTokenMatching = Session::checktokenMatch();
         if(!$isTokenMatching ){
-            echo "Token Missmatch"; exit;
+            return true;
         } 
         
     }

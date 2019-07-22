@@ -1,9 +1,15 @@
 <?php
-//all actions related to session is here
+
+/** 
+ * all actions related to session is here
+ */
+
 class Session { 
    
-    /* set current user to session
-       param : user id(int)        */
+    /** 
+     * setSessionUser
+     * set current user to session
+     */
     static function setSessionUser($id) {
         session_start();
         $_SESSION['userId'] = $id;
@@ -11,21 +17,32 @@ class Session {
         
     }
 
-    /* set error message to session
-       param : message(string)        */
+    /**
+     * setErrorMesssage
+     * set error message to session
+     * @param string $message
+     */
     static function setErrorMesssage($message) {
         session_start();
         $_SESSION['errorMsg'] = $message;  
     }
 
-    /* clear datas from session   */
+    /**
+     *  clearSessionUser
+     *  clear datas from session
+     */ 
     static function clearSessionUser() {
         session_start();
         session_destroy();
     }
     
-    /* check user is logged in or not  */
-    static function checkisLogged() {
+    /**
+     *  checkisLogged  
+     *  check user is logged in or not 
+     * @return boolean
+     */  
+    static function checkisLogged() : bool 
+    {
         if(isset($_SESSION['userId'])) {
             return true;
         } else {   
@@ -33,17 +50,25 @@ class Session {
         }
     } 
     
-    /* set csrf token in session 
-       return generated csrf token (string) */
-    static function setCsrfToken() {
+    /** 
+     * setCsrfToken 
+     * set csrf token in session
+     * @return string
+     */ 
+    static function setCsrfToken() : string
+    {
         $token = md5(uniqid(rand(), TRUE));
         $_SESSION['csrf_token'] = $token;
         return $token; 
     }
 
-    /* check posted csrf token with token in the session
-       return true if matching */
-    static function checktokenMatch() {
+    /**
+     * checktokenMatch
+     * check posted csrf token with token in the session
+     * @return boolean
+     */ 
+    static function checktokenMatch() : bool 
+    {
         if($_SESSION['csrf_token'] === $_POST['csrf_token']) {
            return true;
         } else {

@@ -1,15 +1,22 @@
 <?php
-//insert,select like all database actions is here
+
+/**
+ * insert,select like all database actions is here
+ */
+
 class UserModel extends Database {  
     function __construct()
     {
        $this->connection = $this->connect(); 
     }
     
-    /* checking if any user exist with the posted email
-       posted email as param
-       return true if no user exist with the posted email */ 
-    function checkExisitingUser() {
+    /**
+     * checkExisitingUser
+     * checking if any user exist with the posted email
+     * @return boolean 
+     */ 
+    function checkExisitingUser() : bool 
+    {
     	$sql = "SELECT id FROM users where email='".$_POST['email']."'";
         $result = mysqli_query($this->connection, $sql);
         if (mysqli_num_rows($result) == 0) {  
@@ -19,10 +26,13 @@ class UserModel extends Database {
         } 
     }
 
-    /* post registration datas to database
-       return true after posted successfully
-       save user data to session  */
-    function postRegister() {
+    /** 
+     * postRegister 
+     * post registration datas to database
+     * @return boolean 
+     */
+    function postRegister() : bool 
+    {
         $encryptedPwd = $this->encodePassword($_POST['password']);
         $created_at = date("Y-m-d H:i:s");
         $sql = "INSERT INTO users(first_name,last_name,email,password,dob,created_at)VALUES ('".$_POST['first_name']."','".$_POST['last_name']."','".$_POST['email']."','".$encryptedPwd."','".$_POST['dob']."','".$created_at."')";
@@ -38,16 +48,23 @@ class UserModel extends Database {
        
     }
     
-    /* encoding password
-      param : password(string)
-      returns encoded password(string) */
-    private function encodePassword($password) {
+    /**
+     * encodePassword
+     * encoding password
+     * @param string $password
+     * @return string
+     */ 
+    private function encodePassword($password) : string 
+    {
         return md5($password); 
     }
 
-    /* get users list
-       return users list(array) */
-    function getUser() {
+    /** 
+     * getUser
+     * get users list
+     * @return array
+     */
+    function getUser() : array {
         $users = [];
         $sql = "SELECT id,first_name,last_name,email,dob FROM users";
         $result = mysqli_query($this->connection, $sql);
@@ -60,10 +77,13 @@ class UserModel extends Database {
         return $users;
     }
     
-    /* ckeck login datas with db
-       return true if username and password matching
-       save user data to session */
-    function postLoginUser() {
+    /**
+     * postLoginUser 
+     * ckeck login datas with db
+     * @return boolean
+     */ 
+    function postLoginUser() : bool 
+    {
         $encryptedPwd = $this->encodePassword($_POST['password']);
         $sql = "SELECT id FROM users WHERE email = '".$_POST['email']."' AND password = '".$encryptedPwd."'";
         $result = mysqli_query($this->connection, $sql);

@@ -1,6 +1,8 @@
 <?php
     
-    // auto loading classes
+    /**
+     * auto loading classes
+     */ 
     spl_autoload_register(function ($class_name) {
 	    $modelPath = './models/'.$class_name.'.php';
 	    $controllersPath = './controllers/'.$class_name.'.php';

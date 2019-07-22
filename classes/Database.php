@@ -1,5 +1,9 @@
 <?php
-//connection to the database 
+
+/** 
+ * connection to the database
+ */
+
 class Database  
 {  
     function __construct() {  
@@ -11,8 +15,10 @@ class Database
     public $dbName = 'test_avi';
     public $db;
     
-    /* Connect with the database
-       returns connection object */
+    /** 
+     * connect
+     * Connect with the database
+     */
     function connect()
     {
         if (!isset($db)) {
