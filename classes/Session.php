@@ -13,7 +13,7 @@ class Session {
     static function setSessionUser($id) {
         session_start();
         $_SESSION['userId'] = $id;
-        $_SESSION['errorMsg'] = '';
+        $_SESSION['errorMsg'] = ''; 
         
     }
 
