@@ -149,7 +149,7 @@ class UserController {
      * check posted csrf token with token in the session
      * @return boolean
      */
-    private function checkToken() : bool 
+    private function checkToken() : bool  
     {
         session_start();
         $isTokenMatching = Session::checktokenMatch();
