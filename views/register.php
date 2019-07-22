@@ -74,6 +74,11 @@
                     </div>
                 </div>
                 
+                <?php if(isset($_SESSION['errorMsg']) && $_SESSION['errorMsg']!='') { ?>        
+                    <div class="alert alert-danger" role="alert">
+                    <i class="glyphicon glyphicon-thumbs-up"></i><?php echo $_SESSION['errorMsg']; ?>
+                    </div>
+                <?php } ?>
                 
                
                 <!-- Button -->
