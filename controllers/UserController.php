@@ -154,7 +154,7 @@ class UserController {
         session_start();
         $isTokenMatching = Session::checktokenMatch();
         if(!$isTokenMatching ){
-            return true;
+            return true; 
         } 
         
     }
