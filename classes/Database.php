@@ -13,7 +13,7 @@ class Database
     public $username = 'root';
     public $password = '';
     public $dbName = 'test_avi';
-    public $db;
+    public $db; 
     
     /** 
      * connect
