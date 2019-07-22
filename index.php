@@ -11,6 +11,6 @@
 	require_once('autoload.php');
     
     $routeObj = new Route; 
-	$routeObj->getRedirect();
+	$routeObj->getRedirect(); 
 	
 ?> 
