@@ -31,5 +31,23 @@ class Session {
         } else {   
             return false;
         }
-    }    
+    } 
+    
+    /* set csrf token in session 
+       return generated csrf token (string) */
+    static function setCsrfToken() {
+        $token = md5(uniqid(rand(), TRUE));
+        $_SESSION['csrf_token'] = $token;
+        return $token; 
+    }
+
+    /* check posted csrf token with token in the session
+       return true if matching */
+    static function checktokenMatch() {
+        if($_SESSION['csrf_token'] === $_POST['csrf_token']) {
+           return true;
+        } else {
+            return false; 
+        }
+    }
 } 

@@ -7,11 +7,13 @@ class UserController {
     }
 
     static $userList = [];
+    static $csrftoken = '';
     
     /* to redirect to view pages
        view name as parameter */   
     function getView($view) {
         session_start();
+        self::$csrftoken = Session::setCsrfToken();
         $isLogged = Session::checkisLogged();
         if($isLogged) {
             header('Location: home');
@@ -23,6 +25,7 @@ class UserController {
     /* save posted data to db
        params : post data from the register form */
     function postRegister() {
+        $this->checkToken();
         $validation = $this->validationCheck();
     	if($validation) {
             Session::setErrorMesssage('All fields are required');
@@ -93,6 +96,7 @@ class UserController {
     /* login  ckeck function
        params : post data from the login form */
     function postLogin() {
+        $this->checkToken();
         $validation = $this->validationCheck();
         if($validation) {
             Session::setErrorMesssage('all fields are required');
@@ -105,6 +109,17 @@ class UserController {
                 $this->getView('login');
             }
         }
+        
+    }
+
+    /* check posted csrf token with token in the session
+       exit if mismatch found */
+    private function checkToken() {
+        session_start();
+        $isTokenMatching = Session::checktokenMatch();
+        if(!$isTokenMatching ){
+            echo "Token Missmatch"; exit;
+        } 
         
     }
 } 

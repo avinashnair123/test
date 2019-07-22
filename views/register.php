@@ -14,7 +14,8 @@
                 <fieldset>
                 
                 <legend><center><h2><b>Registration Form</b></h2></center></legend><br>
-                	
+
+                <input type="hidden" name="csrf_token" value="<?php echo UserController::$csrftoken; ?>">	
                 
                 <div class="form-group">
                     <label class="col-md-4 control-label">First Name</label>  
@@ -74,7 +75,7 @@
                     </div>
                 </div>
                 
-                <?php if(isset($_SESSION['errorMsg']) && $_SESSION['errorMsg']!='') { ?>        
+                <?php if(isset($_SESSION['errorMsg']) && $_SESSION['errorMsg']!='' && $_SERVER['REQUEST_METHOD'] == 'POST') { ?>        
                     <div class="alert alert-danger" role="alert">
                     <i class="glyphicon glyphicon-thumbs-up"></i><?php echo $_SESSION['errorMsg']; ?>
                     </div>
