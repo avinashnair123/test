@@ -25,7 +25,6 @@ class UserController {
     function postRegister() {
         $validation = $this->validationCheck();
     	if($validation) {
-            session_start();
             Session::setErrorMesssage('All fields are required');
     	    $this->getView('register');
     	} else {
@@ -38,8 +37,7 @@ class UserController {
                     $this->getView('register');
     			}
     	    } else {
-                session_start();
-    	    	Session::setErrorMesssage('Email alredy exists');
+                Session::setErrorMesssage('Email alredy exists');
     	    	$this->getView('register');
     	    }		
     	}
@@ -90,5 +88,23 @@ class UserController {
             self::$userList = $this->userModelObj->getUser();
             require_once('./views/index.php'); 
         }
+    }
+    
+    /* login  ckeck function
+       params : post data from the login form */
+    function postLogin() {
+        $validation = $this->validationCheck();
+        if($validation) {
+            Session::setErrorMesssage('all fields are required');
+    	    $this->getView('login');
+        } else {
+            $loginUser = $this->userModelObj->postLoginUser();
+            if($loginUser) {
+              header('Location: home');
+            } else {
+                $this->getView('login');
+            }
+        }
+        
     }
 } 

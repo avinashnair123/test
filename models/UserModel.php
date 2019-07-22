@@ -44,7 +44,7 @@ class UserModel extends Database {
     private function encodePassword($password) {
         return md5($password); 
     }
-    
+
     /* get users list
        return users list(array) */
     function getUser() {
@@ -58,6 +58,29 @@ class UserModel extends Database {
             $i++;
         }
         return $users;
+    }
+    
+    /* ckeck login datas with db
+       return true if username and password matching
+       save user data to session */
+    function postLoginUser() {
+        $encryptedPwd = $this->encodePassword($_POST['password']);
+        $sql = "SELECT id FROM users WHERE email = '".$_POST['email']."' AND password = '".$encryptedPwd."'";
+        $result = mysqli_query($this->connection, $sql);
+        if (mysqli_num_rows($result) > 0) {  
+            while($row = mysqli_fetch_assoc($result)) {
+                Session::setSessionUser($row['id']);
+            }
+            return true;  
+         } else if(mysqli_num_rows($result) == 0) {
+            $errorMsg = 'Invalid user';
+            Session::setErrorMesssage($errorMsg);
+            return false;
+        } else { 
+            $errorMsg = "Error: " . $sql . "" . mysqli_error($this->connection);
+            Session::setErrorMesssage($errorMsg);
+            return false;  
+        }
     }
    
 }

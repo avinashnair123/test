@@ -31,6 +31,13 @@ class Route {
                 case "logout":
                     $this->userControllerObj->getLogout();
                     break;
+                case "login":
+                    if($method=='GET') {
+                      $this->userControllerObj->getView('login');
+                    } else if($method=='POST') {
+                      $this->userControllerObj->postLogin();
+                    }
+                    break;     
                 default:
                     header('Location: users');     
             }

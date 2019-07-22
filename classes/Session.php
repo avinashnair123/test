@@ -14,6 +14,7 @@ class Session {
     /* set error message to session
        param : message(string)        */
     static function setErrorMesssage($message) {
+        session_start();
         $_SESSION['errorMsg'] = $message;  
     }
 
