@@ -3,7 +3,7 @@
 /** 
  *declaring all routes and redirections
 */
- 
+
 class Route {
     function __construct() {
         $this->userControllerObj = new UserController;     
@@ -17,7 +17,7 @@ class Route {
         $requestUri = $_SERVER['REQUEST_URI'];
         $urlValues = explode("/", $requestUri);
         $url = end($urlValues);
-        $method = $_SERVER['REQUEST_METHOD'];
+        $method = $_SERVER['REQUEST_METHOD']; 
         
         if($url) {
             switch ($url) {
