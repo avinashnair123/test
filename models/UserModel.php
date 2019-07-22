@@ -43,7 +43,7 @@ class UserModel extends Database {
         } else {
         	$errorMsg = "Error: " . $sql . "" . mysqli_error($this->connection);
             Session::setErrorMesssage($errorMsg);
-            return false; 
+            return false;  
         }
        
     }
