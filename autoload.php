@@ -15,5 +15,5 @@
 	    } else if(file_exists($classPath)){
 	    	require_once($classPath);
 	    }
-	});
+	}); 
 ?> 
