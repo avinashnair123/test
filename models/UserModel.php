@@ -13,29 +13,27 @@ class UserModel extends Database {
     /**
      * checkExisitingUser
      * checking if any user exist with the posted email
+     * @param string $email
      * @return boolean 
      */ 
-    function checkExisitingUser() : bool 
+    function checkExisitingUser($email) : bool 
     {
-    	$sql = "SELECT id FROM users where email='".$_POST['email']."'";
+    	$sql = "SELECT id FROM users where email='".$email."'";
         $result = mysqli_query($this->connection, $sql);
-        if (mysqli_num_rows($result) == 0) {  
-           return true;  
-        } else {  
-            return false;  
-        } 
+        return mysqli_num_rows($result) == 0;  
     }
 
     /** 
      * postRegister 
      * post registration datas to database
+     * @param array $data
      * @return boolean 
      */
-    function postRegister() : bool 
+    function postRegister($data) : bool 
     {
-        $encryptedPwd = $this->encodePassword($_POST['password']);
+        $encryptedPwd = $this->encodePassword($data['password']);
         $created_at = date("Y-m-d H:i:s");
-        $sql = "INSERT INTO users(first_name,last_name,email,password,dob,created_at)VALUES ('".$_POST['first_name']."','".$_POST['last_name']."','".$_POST['email']."','".$encryptedPwd."','".$_POST['dob']."','".$created_at."')";
+        $sql = "INSERT INTO users(first_name,last_name,email,password,dob,created_at)VALUES ('".$data['first_name']."','".$data['last_name']."','".$data['email']."','".$encryptedPwd."','".$data['dob']."','".$created_at."')";
         $response = [];
         if (mysqli_query($this->connection, $sql)) {
             Session::setSessionUser($this->connection->insert_id);
@@ -80,12 +78,13 @@ class UserModel extends Database {
     /**
      * postLoginUser 
      * ckeck login datas with db
+     * @param array $data
      * @return boolean
      */ 
-    function postLoginUser() : bool 
+    function postLoginUser($data) : bool 
     {
-        $encryptedPwd = $this->encodePassword($_POST['password']);
-        $sql = "SELECT id FROM users WHERE email = '".$_POST['email']."' AND password = '".$encryptedPwd."'";
+        $encryptedPwd = $this->encodePassword($data['password']);
+        $sql = "SELECT id FROM users WHERE email = '".$data['email']."' AND password = '".$encryptedPwd."'";
         $result = mysqli_query($this->connection, $sql);
         if (mysqli_num_rows($result) > 0) {  
             while($row = mysqli_fetch_assoc($result)) {

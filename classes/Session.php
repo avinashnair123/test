@@ -43,11 +43,7 @@ class Session {
      */  
     static function checkisLogged() : bool 
     {
-        if(isset($_SESSION['userId'])) {
-            return true;
-        } else {   
-            return false;
-        }
+        return isset($_SESSION['userId']);
     } 
     
     /** 
@@ -65,14 +61,11 @@ class Session {
     /**
      * checktokenMatch
      * check posted csrf token with token in the session
+     * @param string $token
      * @return boolean
      */ 
-    static function checktokenMatch() : bool 
+    static function checktokenMatch($token) : bool 
     {
-        if($_SESSION['csrf_token'] === $_POST['csrf_token']) {
-           return true;
-        } else {
-            return false; 
-        }
+        return $_SESSION['csrf_token'] === $token;
     }
 } 

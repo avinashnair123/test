@@ -5,8 +5,12 @@
 */
 
 class Route {
-    function __construct() {
-        $this->userControllerObj = new UserController;     
+    
+    /**  
+      * constructor
+      */ 
+    function __construct($userController) {
+        $this->userControllerObj = $userController;     
     }
 
     /**  
@@ -26,11 +30,10 @@ class Route {
                     $this->userControllerObj->getIndex();
                     break;
                 case "register":
-                    if($method=='GET') {
+                    if($method=='GET') 
                         $this->userControllerObj->getView('register');
-                    } else if($method=='POST') {
+                    else if($method=='POST') 
                         $this->userControllerObj->postRegister();            
-                    }
                     break;
                 case "home":
                     $this->userControllerObj->getHome();
@@ -39,11 +42,10 @@ class Route {
                     $this->userControllerObj->getLogout();
                     break;
                 case "login":
-                    if($method=='GET') {
-                      $this->userControllerObj->getView('login');
-                    } else if($method=='POST') {
-                      $this->userControllerObj->postLogin();
-                    }
+                    if($method=='GET') 
+                        $this->userControllerObj->getView('login');
+                    else if($method=='POST') 
+                        $this->userControllerObj->postLogin();
                     break;     
                 default:
                     header('Location: users');     

@@ -10,7 +10,7 @@
 	
 	require_once('autoload.php');
     
-    $routeObj = new Route; 
+    $routeObj = new Route(new UserController(new UserModel)); 
 	$routeObj->getRedirect(); 
 	
 ?> 
