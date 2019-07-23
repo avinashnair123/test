@@ -10,8 +10,7 @@ class Session {
      * setSessionUser
      * set current user to session
      */
-    static function setSessionUser($id) {
-        session_start();
+    static function setSessionUser(int $id) {
         $_SESSION['userId'] = $id;
         $_SESSION['errorMsg'] = ''; 
         
@@ -22,8 +21,7 @@ class Session {
      * set error message to session
      * @param string $message
      */
-    static function setErrorMesssage($message) {
-        session_start();
+    static function setErrorMesssage(string $message) {
         $_SESSION['errorMsg'] = $message;  
     }
 
@@ -32,7 +30,6 @@ class Session {
      *  clear datas from session
      */ 
     static function clearSessionUser() {
-        session_start();
         session_destroy();
     }
     
@@ -55,6 +52,7 @@ class Session {
     {
         $token = md5(uniqid(rand(), TRUE));
         $_SESSION['csrf_token'] = $token;
+
         return $token; 
     }
 
@@ -64,7 +62,7 @@ class Session {
      * @param string $token
      * @return boolean
      */ 
-    static function checktokenMatch($token) : bool 
+    static function checktokenMatch(string $token) : bool 
     {
         return $_SESSION['csrf_token'] === $token;
     }

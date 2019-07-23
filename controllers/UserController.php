@@ -11,7 +11,8 @@ class UserController {
       */  
     function __construct($userModel)
     {
-        $this->userModelObj = $userModel;     
+        $this->userModelObj = $userModel;
+        session_start();     
     }
 
     static $userList = [];
@@ -22,13 +23,17 @@ class UserController {
      * to redirect to view pages
      * @param string $view
      */   
-    function getView($view) {
-        session_start();
+    function getView(string $view) 
+    {
         self::$csrftoken = Session::setCsrfToken();
         $isLogged = Session::checkisLogged();
-        if($isLogged) 
+
+        if($isLogged)
+
             header('Location: home');
-        else   
+
+        else
+
             require_once('./views/'.$view.'.php');
     }
 
@@ -39,27 +44,46 @@ class UserController {
     function postRegister() {
         $postData = $_POST;
         $tokenMisMatch = $this->checkToken($postData['csrf_token']);
+
         if(!$tokenMisMatch) {
+
             Session::setErrorMesssage('Token Missmatch');
-    	    $this->getView('register');
-        }
-        $validation = $this->validationCheck($postData);
-    	if($validation) {
-            Session::setErrorMesssage('All fields are required');
-    	    $this->getView('register');
-    	} else {
-            $checkUserNotExist = $this->userModelObj->checkExisitingUser($postData['email']);
-    		if($checkUserNotExist) {
-    			$registerUser = $this->userModelObj->postRegister($postData);
-    			if($registerUser)
-                    header('Location: home');
-    			else 
+            $this->getView('register');
+            
+        } else {
+
+            $validation = $this->validationCheck($postData);
+
+            if($validation) {
+
+                Session::setErrorMesssage('All fields are required');
+                $this->getView('register');
+                
+            } else {
+
+                $checkUserNotExist = $this->userModelObj->checkExisitingUser($postData['email']);
+
+                if($checkUserNotExist) {
+
+                    $registerUser = $this->userModelObj->postRegister($postData);
+                    
+                    if($registerUser)
+                    
+                        header('Location: home');
+
+                    else
+                    
+                        $this->getView('register');
+
+                } else {
+
+                    Session::setErrorMesssage('Email alredy exists');
                     $this->getView('register');
-    		} else {
-                Session::setErrorMesssage('Email alredy exists');
-    	    	$this->getView('register');
-    	    }		
-    	}
+                    
+                }		
+            }
+
+        }    
     	
     }
 
@@ -69,14 +93,18 @@ class UserController {
      * @param array $data
      * @return boolean
      */ 
-    private function validationCheck($data) : bool 
+    private function validationCheck(array $data) : bool 
     {
         $validationExist = false;
+
         foreach($data as $val) {
+
             if ($val=='')
+
                $validationExist = true;
             
         }
+
         return $validationExist;  
     }
 
@@ -85,12 +113,16 @@ class UserController {
      * redirection to the home page after login/registration 
      */
     function getHome() {
-        session_start();
         $isLogged = Session::checkisLogged();
+
         if($isLogged)
+
             require_once('./views/home.php');
-        else   
+
+        else
+
             header('Location: users');
+
     }
 
     /**
@@ -107,13 +139,17 @@ class UserController {
      *  redirect to index page 
      */
     function getIndex() {
-        session_start();
         $isLogged = Session::checkisLogged();
+
         if($isLogged)
+
             header('Location: home');
-        else {    
+
+        else { 
+
             self::$userList = $this->userModelObj->getUser();
-            require_once('./views/index.php'); 
+            require_once('./views/index.php');
+
         }
     }
     
@@ -124,22 +160,33 @@ class UserController {
     function postLogin() {
         $postData = $_POST;
         $tokenMisMatch = $this->checkToken($postData['csrf_token']);
+        
         if(!$tokenMisMatch) {
             Session::setErrorMesssage('Token Missmatch');
-    	    $this->getView('login');
-        }
-        $validation = $this->validationCheck($postData);
-        if($validation) {
-            Session::setErrorMesssage('all fields are required');
-    	    $this->getView('login');
-        } else {
-            $loginUser = $this->userModelObj->postLoginUser($postData);
-            if($loginUser)
-              header('Location: home');
-            else 
-              $this->getView('login');
+            $this->getView('login');
             
-        }
+        } else {
+            $validation = $this->validationCheck($postData);
+
+            if($validation) {
+
+                Session::setErrorMesssage('all fields are required');
+                $this->getView('login');
+                
+            } else {
+
+                $loginUser = $this->userModelObj->postLoginUser($postData);
+
+                if($loginUser)
+
+                header('Location: home');
+
+                else 
+
+                $this->getView('login');
+            
+            }
+        }    
         
     }
 
@@ -149,9 +196,8 @@ class UserController {
      * @param string $token
      * @return boolean
      */
-    private function checkToken($token) : bool  
+    private function checkToken(string $token) : bool  
     {
-        session_start();
         return Session::checktokenMatch($token);
     }
 } 

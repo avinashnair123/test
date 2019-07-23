@@ -24,34 +24,58 @@ class Route {
         $method = $_SERVER['REQUEST_METHOD']; 
         
         if($url) {
+
             switch ($url) {
+
                 case "index.php":
                 case "users":
+
                     $this->userControllerObj->getIndex();
                     break;
+
                 case "register":
+
                     if($method=='GET') 
+
                         $this->userControllerObj->getView('register');
-                    else if($method=='POST') 
-                        $this->userControllerObj->postRegister();            
+
+                    else if($method=='POST')
+
+                        $this->userControllerObj->postRegister();
+
                     break;
+
                 case "home":
+
                     $this->userControllerObj->getHome();
                     break;
+
                 case "logout":
+
                     $this->userControllerObj->getLogout();
                     break;
+
                 case "login":
-                    if($method=='GET') 
+
+                    if($method=='GET')
+
                         $this->userControllerObj->getView('login');
+
                     else if($method=='POST') 
+
                         $this->userControllerObj->postLogin();
-                    break;     
+
+                    break; 
+
                 default:
+
                     header('Location: users');     
             }
+
         } else {
+
             $this->userControllerObj->getIndex();
+            
         } 
     }        
 } 
