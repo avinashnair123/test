@@ -6,6 +6,7 @@ Simple user Registration - Login System
   <li>Users List ( /users )</li>
   <li>Registration ( /register )</li>
   <li>Login ( /login )</li>
+  <li>PHP Unit Test included</li>
 <ul> 
 
 
