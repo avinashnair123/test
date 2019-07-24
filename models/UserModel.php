@@ -4,10 +4,13 @@
  * insert,select like all database actions is here
  */
 
-class UserModel extends Database {  
+include_once('./classes/Database.php');
+
+class UserModel {  
     function __construct()
     {
-       $this->connection = $this->connect(); 
+        $dbObj = new Database;
+        $this->connection = $dbObj->connect(); 
     }
     
     /**
